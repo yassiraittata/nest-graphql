@@ -40,6 +40,7 @@ export class UserResolver {
   //   ];
   // }
 
+  // Resolve posts
   @ResolveField(returns => Post)
   async posts(@Parent() creator: User) {
     const posts = await this.prisma.post.findMany({

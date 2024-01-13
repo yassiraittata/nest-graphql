@@ -23,6 +23,7 @@ export class PostResolver {
     return posts;
   }
 
+  // Resolve Creator
   @ResolveField()
   async creator(@Parent() post: Post) {
     const user = await this.prisma.user.findUnique({
