@@ -1,0 +1,11 @@
+version: '3.1'
+services:
+  db:
+    image: postgres
+    restart: always
+    container_name: nest_graphql
+    environment:
+      POSTGRES_USER: yassir
+      POSTGRES_PASSWORD: yassir
+      POSTGRES_DB: nest_graphql
+    
