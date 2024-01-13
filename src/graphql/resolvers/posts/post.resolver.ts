@@ -18,9 +18,18 @@ export class PostResolver {
   @Query(returns => [Post!]!, { name: 'Posts', nullable: false })
   async getAllPosts() {
     const posts = await this.prisma.post.findMany({
-      include: { creator: true },
+      // include: { creator: true },
     });
     return posts;
+  }
+
+  @ResolveField()
+  async creator(@Parent() post: Post) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: '65a2ea587d905c51f8ce3b4e' },
+    });
+
+    return user;
   }
 
   @Mutation(returns => Post, { name: 'createPost' })
