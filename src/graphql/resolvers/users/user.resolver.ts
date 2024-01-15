@@ -11,14 +11,23 @@ import {
 import { User } from '../../models/User';
 import { CreateUserDto } from './dto/create-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Post } from '@nestjs/common';
+import { Post, UseGuards } from '@nestjs/common';
+import { hash } from 'argon2';
+import { GqlAuthGuard } from '../auth/guards/auth.guard';
+import { CurrentUser, TUser } from '../auth/decorators/current-user.decorator';
 
 @Resolver(() => User)
 export class UserResolver {
   constructor(private readonly prisma: PrismaService) {}
 
-  @Query(returns => User, { name: 'User' })
-  async getUserById(@Args('id', { nullable: false }) id: string) {
+  @UseGuards(GqlAuthGuard)
+  @Query(() => User, { name: 'User' })
+  async getUserById(
+    @Args('id', { nullable: false }) id: string,
+    @CurrentUser() Curentuser: TUser,
+  ) {
+    console.log({ sub: Curentuser.userId, email: Curentuser.email });
+
     const user = await this.prisma.user.findFirst({
       where: { id },
       include: { Post: true },
@@ -57,14 +66,24 @@ export class UserResolver {
     @Args('createUserInput') body: CreateUserDto,
     @Context('userId') userId: string,
   ) {
+    const userExists = await this.prisma.user.findUnique({
+      where: {
+        email: body.email,
+      },
+    });
+
+    const hashedPw = await hash(body.password);
+
     const user = await this.prisma.user.create({
       data: {
         name: body.name,
-        password: body.password,
+        password: hashedPw,
         email: body.email,
       },
       include: { Post: true },
     });
+
+    delete user.password;
 
     return user;
   }

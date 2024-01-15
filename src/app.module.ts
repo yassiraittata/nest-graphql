@@ -4,6 +4,11 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { UserResolver } from './graphql/resolvers/users/user.resolver';
 import { PostResolver } from './graphql/resolvers/posts/post.resolver';
 import { PrimsaModule } from './prisma/prisma.module';
+import { JwtModule } from '@nestjs/jwt';
+import { AuthResolver } from './graphql/resolvers/auth/auth.resolver';
+import { ConfigModule } from '@nestjs/config';
+import { GqlAuthGuard } from './graphql/resolvers/auth/guards/auth.guard';
+import { JwtStrategy } from './graphql/resolvers/auth/startegy/jwt.strategy';
 
 @Module({
   imports: [
@@ -15,8 +20,16 @@ import { PrimsaModule } from './prisma/prisma.module';
       },
     }),
     PrimsaModule,
+    JwtModule.register({}),
+    ConfigModule.forRoot(),
   ],
   controllers: [],
-  providers: [UserResolver, PostResolver],
+  providers: [
+    UserResolver,
+    PostResolver,
+    AuthResolver,
+    JwtStrategy,
+    GqlAuthGuard,
+  ],
 })
 export class AppModule {}

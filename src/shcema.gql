@@ -13,13 +13,18 @@ type User {
   id: String!
   name: String!
   email: String!
-  password: String
   posts: [Post!]!
+}
+
+type Auth {
+  token: String!
+  user: User!
 }
 
 type Query {
   User(id: String!): User!
   Posts: [Post!]!
+  signin(email: String!, password: String!): Auth!
 }
 
 type Mutation {

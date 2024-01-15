@@ -12,8 +12,8 @@ export class User {
   @Field({ nullable: false })
   email: string;
 
-  @Field({ nullable: true })
-  password: string;
+  // @Field({ nullable: true })
+  // password: string;
 
   @Field(type => [Post!]!)
   posts?: Post[];
