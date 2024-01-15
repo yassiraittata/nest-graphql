@@ -7,7 +7,7 @@ export type TUser = {
 };
 
 export const CurrentUser = createParamDecorator(
-  (data: unknown, context: ExecutionContext): TUser => {
+  (data: never, context: ExecutionContext): TUser => {
     const ctx = GqlExecutionContext.create(context);
     return ctx.getContext().req.user;
   },

@@ -26,7 +26,7 @@ export class UserResolver {
     @Args('id', { nullable: false }) id: string,
     @CurrentUser() Curentuser: TUser,
   ) {
-    console.log({ sub: Curentuser.userId, email: Curentuser.email });
+    // console.log({ sub: Curentuser.userId, email: Curentuser.email });
 
     const user = await this.prisma.user.findFirst({
       where: { id },

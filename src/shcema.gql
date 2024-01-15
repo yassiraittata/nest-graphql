@@ -24,6 +24,7 @@ type Auth {
 type Query {
   User(id: String!): User!
   Posts: [Post!]!
+  UsersPost: [Post!]!
   signin(email: String!, password: String!): Auth!
 }
 
@@ -41,5 +42,4 @@ input CreateUserDto {
 input CreatePostDto {
   title: String!
   text: String!
-  userId: String!
 }

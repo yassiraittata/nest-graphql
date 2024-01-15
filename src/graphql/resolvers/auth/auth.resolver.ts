@@ -33,6 +33,7 @@ export class AuthResolver {
     const payload = { email: user.email, sub: user.id };
     const token = this.jwt.sign(payload, {
       secret: this.config.get('SECRET'),
+      expiresIn: '1h',
     });
 
     delete user.password;

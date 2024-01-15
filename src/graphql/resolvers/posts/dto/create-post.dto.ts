@@ -7,7 +7,4 @@ export class CreatePostDto {
 
   @Field({ nullable: false })
   text: string;
-
-  @Field({ nullable: false })
-  userId: string;
 }
